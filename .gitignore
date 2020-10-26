@@ -116,3 +116,5 @@ model/*
 
 ChemFH/data/Substructures/
 ChemFH/data/Mechanism/
+
+*.pkl.gz

@@ -3,7 +3,7 @@ Description: Generate and save the molecule object of SMARTS
 Author: Kotori Y
 Date: 2020-10-24 16:38:14
 LastEditors: Kotori Y
-LastEditTime: 2020-10-24 19:26:35
+LastEditTime: 2020-10-26 19:25:11
 FilePath: \ChemFH\ChemFH\substructure_filter\load_pattern.py
 AuthorMail: kotori@cbdd.me
 '''
@@ -73,7 +73,7 @@ def loadpkl(endpoint):
         pattl = cPickle.load(gzip.open(filename,'rb'))    
     except:
         _Generatepkl(endpoint)
-        return Loadpkl(endpoint)
+        return loadpkl(endpoint)
     return pattl
 
 
@@ -82,5 +82,6 @@ if '__main__' == __name__:
 
     for file in files:
         endpoint = os.path.splitext(file)[0]
-        patt = Loadpkl(endpoint)
-        print(patt)
+        _Generatepkl(endpoint)
+        # patt = loadpkl(endpoint)
+        # print(patt)
