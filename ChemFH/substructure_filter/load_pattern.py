@@ -3,7 +3,7 @@ Description: Generate and save the molecule object of SMARTS
 Author: Kotori Y
 Date: 2020-10-24 16:38:14
 LastEditors: Kotori Y
-LastEditTime: 2020-10-26 21:19:53
+LastEditTime: 2020-10-26 21:30:06
 FilePath: \ChemFH\ChemFH\substructure_filter\load_pattern.py
 AuthorMail: kotori@cbdd.me
 '''
@@ -35,7 +35,13 @@ def _Generatepkl(endpoint):
     :return: None
     """
     file = os.path.join(_dir, 'data/SMARTS', f'{endpoint}.txt')
-    
+    try:
+        os.mkdir(os.path.join(_dir, 'data/Pattern'))
+        # print(os.path.join(_dir, 'data/Pattern'))
+    except FileExistsError:
+        pass
+
+
     with open(file, 'r', encoding='utf-8') as f_obj:
         lines = csv.reader(f_obj,delimiter='\t')
         next(lines)  
