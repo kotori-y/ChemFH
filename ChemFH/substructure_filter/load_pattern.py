@@ -3,7 +3,7 @@ Description: Generate and save the molecule object of SMARTS
 Author: Kotori Y
 Date: 2020-10-24 16:38:14
 LastEditors: Kotori Y
-LastEditTime: 2020-10-26 19:25:11
+LastEditTime: 2020-10-26 21:19:53
 FilePath: \ChemFH\ChemFH\substructure_filter\load_pattern.py
 AuthorMail: kotori@cbdd.me
 '''
@@ -16,7 +16,8 @@ from rdkit.Chem import AllChem as Chem
 
 
 __all__ = ['loadpkl']
-_dir = os.path.abspath(os.path.join(os.path.dirname("__file__")))
+_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+# print(_dir)
 
 
 def _Generatepkl(endpoint):
@@ -33,7 +34,7 @@ def _Generatepkl(endpoint):
         
     :return: None
     """
-    file = os.path.join(_dir, 'ChemFH/data/SMARTS', f'{endpoint}.txt')
+    file = os.path.join(_dir, 'data/SMARTS', f'{endpoint}.txt')
     
     with open(file, 'r', encoding='utf-8') as f_obj:
         lines = csv.reader(f_obj,delimiter='\t')
@@ -46,7 +47,7 @@ def _Generatepkl(endpoint):
         line[-1] = patt  
 
     out = cPickle.dumps(lines, protocol=-1)
-    outfile = os.path.join(_dir, 'ChemFH/data/Pattern', f'{endpoint}.pkl.gz')
+    outfile = os.path.join(_dir, 'data/Pattern', f'{endpoint}.pkl.gz')
     with gzip.open(outfile, 'wb') as f_out:
         f_out.write(out)
     f_out.close()
@@ -67,7 +68,7 @@ def loadpkl(endpoint):
     :rtype: list   
         
     """
-    filename = os.path.join(_dir, 'ChemFH/data/Pattern', f'{endpoint}.pkl.gz')
+    filename = os.path.join(_dir, 'data/Pattern', f'{endpoint}.pkl.gz')
     
     try:
         pattl = cPickle.load(gzip.open(filename,'rb'))    
@@ -78,7 +79,10 @@ def loadpkl(endpoint):
 
 
 if '__main__' == __name__:
-    files = os.listdir(r'ChemFH\data\SMARTS')
+    try:
+        files = os.listdir(r'ChemFH/data/SMARTS') # for vscode dev
+    except:
+        files = os.listdir(r'../data/SMARTS')
 
     for file in files:
         endpoint = os.path.splitext(file)[0]
