@@ -3,7 +3,7 @@ Description:
 Author: Kotori Y
 Date: 2020-10-24 16:02:15
 LastEditors: Kotori Y
-LastEditTime: 2020-10-26 14:41:40
+LastEditTime: 2020-10-28 08:56:47
 FilePath: \ChemFH\ChemFH\__init__.py
 AuthorMail: kotori@cbdd.me
 '''
@@ -123,7 +123,7 @@ def readSmiles(smiles: list):
 
 def readSDFfile(sdfFile: str):
 
-    suppl = Chem.FastSDMolSupplier(sdfFile)
+    suppl = Chem.SDMolSupplier(sdfFile)
     mols = [mol for mol in suppl]
     return mols
 
