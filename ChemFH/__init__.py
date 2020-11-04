@@ -3,7 +3,7 @@ Description:
 Author: Kotori Y
 Date: 2020-10-24 16:02:15
 LastEditors: Kotori Y
-LastEditTime: 2020-10-28 08:56:47
+LastEditTime: 2020-11-04 13:00:42
 FilePath: \ChemFH\ChemFH\__init__.py
 AuthorMail: kotori@cbdd.me
 '''
@@ -35,6 +35,7 @@ class ChemFH(FrequentHitterFilter):
     def _disposedRes(self, res, endpoint):
         num = []
         svg = []
+        smarts = []
 
         for mol, x in zip(mols, res):
             num.append(len(x))
@@ -43,6 +44,10 @@ class ChemFH(FrequentHitterFilter):
                     [highlightAtoms(mol, atoms[0], [200, 100])
                      if x else 'Accepted' for atoms in x.values()]
                 )
+            )
+            print(list(x.keys()))
+            smarts.append(
+                ' | '.join(list(x.keys()))
             )
 
             
@@ -55,6 +60,7 @@ class ChemFH(FrequentHitterFilter):
         detail = pd.DataFrame(
             {
                 f"{endpoint}": svg,
+                "SMARTS": smarts
             }
         )
         yield summary, detail
@@ -77,6 +83,7 @@ class ChemFH(FrequentHitterFilter):
             for summary, detail in self._disposedRes(res, endpoint):
                 out1 = pd.concat([out1, summary], axis=1)
                 out2 = pd.concat([out2, detail], axis=1)
+            # out2['SMARTS'] = res
 
         pd.set_option('colheader_justify', 'center')   # FOR TABLE <th>
         html_string = """<html>

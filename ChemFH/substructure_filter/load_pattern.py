@@ -3,7 +3,7 @@ Description: Generate and save the molecule object of SMARTS
 Author: Kotori Y
 Date: 2020-10-24 16:38:14
 LastEditors: Kotori Y
-LastEditTime: 2020-10-26 21:30:06
+LastEditTime: 2020-11-04 11:20:49
 FilePath: \ChemFH\ChemFH\substructure_filter\load_pattern.py
 AuthorMail: kotori@cbdd.me
 '''
@@ -43,14 +43,14 @@ def _Generatepkl(endpoint):
 
 
     with open(file, 'r', encoding='utf-8') as f_obj:
-        lines = csv.reader(f_obj,delimiter='\t')
+        lines = csv.reader(f_obj, delimiter='\t')
         next(lines)  
         lines = tuple(lines)
     f_obj.close()
     
     for line in lines:
         patt = Chem.MolFromSmarts(line[-1])
-        line[-1] = patt  
+        line[0] = patt
 
     out = cPickle.dumps(lines, protocol=-1)
     outfile = os.path.join(_dir, 'data/Pattern', f'{endpoint}.pkl.gz')
@@ -77,7 +77,7 @@ def loadpkl(endpoint):
     filename = os.path.join(_dir, 'data/Pattern', f'{endpoint}.pkl.gz')
     
     try:
-        pattl = cPickle.load(gzip.open(filename,'rb'))    
+        pattl = cPickle.load(gzip.open(filename,'rb'))
     except:
         _Generatepkl(endpoint)
         return loadpkl(endpoint)

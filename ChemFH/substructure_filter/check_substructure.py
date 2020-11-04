@@ -3,7 +3,7 @@ Description: the functions
 Author: Kotori Y
 Date: 2020-10-24 16:08:49
 LastEditors: Kotori Y
-LastEditTime: 2020-10-26 14:37:28
+LastEditTime: 2020-11-04 11:23:49
 FilePath: \ChemFH\ChemFH\substructure_filter\check_substructure.py
 AuthorMail: kotori@cbdd.me
 '''
@@ -23,10 +23,11 @@ class InvalidInputError(Exception):
 def withEndpoint(endpoint="PAINS"):
     def check(func):
         @wraps(func)
-        def wrapper(mol, endpoint):
+        def wrapper(mols, endpoint):
             pattl = loadpkl(endpoint)
-            res = func(mol=mol, pattl=pattl)
-            return res
+            for mol in mols:
+                res = func(mol=mol, pattl=pattl)
+                yield res
         return wrapper
     return check
 
@@ -48,10 +49,10 @@ def checkValidMol(func):
 def checkPattl(mol, pattl):
     
     checkRes = {}
-    for name, patt in pattl:
+    for patt, smart in pattl:
         atoms = mol.GetSubstructMatches(patt)
         if atoms:
-            checkRes[name] = atoms
+            checkRes[smart] = atoms
     
     return checkRes
 
@@ -60,10 +61,15 @@ def checkPattl(mol, pattl):
 if '__main__' == __name__:
     from rdkit import Chem
 
-    smi = 'O=c1cc(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12' 
-    mol = Chem.MolFromSmiles(smi)
+    smis = [
+        'OC1=C[C-]2[OH+]C(c3ccc(O)c(O)c3)=C(O)C=C2C(O)=C1',
+        'O=c1cc(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12',
+        'OCC(O)C(O)C(O)C(O)CO',
+        'O=c1cc(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12',
+    ]
+    mols = [Chem.MolFromSmiles(smi) for smi in smis]
 
-    print(checkPattl(mol=mol, endpoint="PAINS"))
+    print(list(checkPattl(mols=mols, endpoint="PAINS")))
 
 
         

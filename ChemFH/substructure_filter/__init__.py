@@ -3,7 +3,7 @@ Description:
 Author: Kotori Y
 Date: 2020-10-24 16:03:49
 LastEditors: Kotori Y
-LastEditTime: 2020-10-26 14:38:03
+LastEditTime: 2020-11-03 08:56:20
 FilePath: \ChemFH\ChemFH\substructure_filter\__init__.py
 AuthorMail: kotori@cbdd.me
 '''
@@ -30,10 +30,11 @@ class FrequentHitterFilter:
         
         func = partial(checkPattl, endpoint=endpoint)
         mols = mols if isinstance(mols, Iterable) else (mols, )
-        pool = mp.Pool(self.nJobs)
-        res = pool.map_async(func, mols).get()
-        pool.close()
-        pool.join()
+        # pool = mp.Pool(self.nJobs)
+        # res = pool.map_async(func, mols).get()
+        # pool.close()
+        # pool.join()
+        res = list(func(mols))
         return res
 
     
